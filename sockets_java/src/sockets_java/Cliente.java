@@ -8,7 +8,7 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-public class ClienteSocket {
+public class Cliente {
 
 	public static void main(String[] args) {
 		try {
@@ -32,16 +32,24 @@ public class ClienteSocket {
 					}
 				}
 				
-			}.start();;
+			}.start();
 			
-			// escrevendo para o servidor
+			//escrevendo para o servidor
 			PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
-			BufferedReader leitorTerminal = new  BufferedReader(new InputStreamReader(System.in));
-			//System in se trata da conexao de string do terminal
+			BufferedReader leitorTerminal = new BufferedReader(new InputStreamReader(System.in));
+			String mensagemTerminal = "";
+
 			
 			while(true) {
-				String mensagemTerminal = leitorTerminal.readLine();
+				mensagemTerminal = leitorTerminal.readLine();
+				if(mensagemTerminal == null || mensagemTerminal.length() == 0) {
+					continue;
+				}
 				escritor.println(mensagemTerminal);
+				if(mensagemTerminal.equalsIgnoreCase("::SAIR")) {
+					System.exit(0);
+				}
+
 			}
 			
 		} catch (UnknownHostException e) {
