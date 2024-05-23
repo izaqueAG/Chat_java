@@ -12,17 +12,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class ClienteSwing {
-    private JFrame frame;
+    private JTabbedPane home;
+    private JFrame chatServidor;
+    private JFrame telaAmigos;
     private JTextArea messageArea;
     private JTextField inputField;
-    private JButton sendButton;
+    private JButton botaoEnviar;
     private PrintWriter escritor;
     private BufferedReader leitor;
+    private String[] usuarios = new String[]{};
 
     public ClienteSwing() {
-        frame = new JFrame("Chat App");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 400);
+        chatServidor = new JFrame("Chat App");
+        chatServidor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        chatServidor.setSize(400, 400);
+
+        // Frame que contém clientes onlines 
+        telaAmigos = new JFrame("Amigos online");
+        chatServidor.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        chatServidor.setSize(200, 200);
 
         // Área de texto para exibir mensagens
         messageArea = new JTextArea();
@@ -35,20 +43,20 @@ public class ClienteSwing {
         inputField = new JTextField(25);
 
         // Botão de enviar
-        sendButton = new JButton("Enviar");
+        botaoEnviar = new JButton("Enviar");
 
         // Painel inferior contendo o campo de texto e o botão
         JPanel inputPanel = new JPanel();
         inputPanel.setLayout(new BorderLayout());
         inputPanel.add(inputField, BorderLayout.CENTER);
-        inputPanel.add(sendButton, BorderLayout.EAST);
+        inputPanel.add(botaoEnviar, BorderLayout.EAST);
 
-        // Adiciona o painel de rolagem e o painel de entrada ao frame
-        frame.getContentPane().add(scrollPane, BorderLayout.CENTER);
-        frame.getContentPane().add(inputPanel, BorderLayout.SOUTH);
+        // Adiciona o painel de rolagem e o painel de entrada a chatServidor
+        chatServidor.getContentPane().add(scrollPane, BorderLayout.CENTER);
+        chatServidor.getContentPane().add(inputPanel, BorderLayout.SOUTH);
 
         // Adiciona um listener ao botão de enviar
-        sendButton.addActionListener(new ActionListener() {
+        botaoEnviar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 sendMessage();
             }
@@ -61,18 +69,27 @@ public class ClienteSwing {
             }
         });
 
-        frame.setVisible(true);
+        chatServidor.setVisible(true);
     }
 
     private void sendMessage() {
         String message = inputField.getText().trim();
         if (!message.isEmpty()) {
-            messageArea.append("Você: " + message + "\n");
+            chatServidor.append("Você: " + message + "\n");
             inputField.setText("");
             if (escritor != null) {
                 escritor.println(message);
             }
         }
+    }
+
+    private void preencherlistaUsuarios(usuarios){
+        DefaultListModel modelo = new DefaultListModel();
+        usuarios.setModel(modelo);
+        for(String usuario: usuarios){
+            modelo.addElement(usuario);
+        }
+
     }
 
     private void connectToServer(String serverAddress, int port) {
