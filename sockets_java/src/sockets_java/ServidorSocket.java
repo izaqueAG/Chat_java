@@ -21,12 +21,10 @@ public class ServidorSocket {
 			System.err.println("A porta esta ocupada ou o servidor nao esta disponivel");
 			try {
 				if(servidor != null) {
-					servidor.close();
+					servidor.close(); 
 				}				
-			} catch (IOException e1) {
-				
-				e1.printStackTrace();
-			}
+			} catch (IOException e1) {}
+			System.err.println("A porta esta ocupada ou o servidor foi fechado");
 			e.printStackTrace();
 		}
 	}
