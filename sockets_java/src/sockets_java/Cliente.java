@@ -36,23 +36,7 @@ public class Cliente {
 				
 			}.start();
 			
-			//escrevendo para o servidor
-			PrintWriter escritor = new PrintWriter(cliente.getOutputStream(), true);
-			BufferedReader leitorTerminal = new BufferedReader(new InputStreamReader(System.in));
-			String mensagemTerminal = "";
-
 			
-			while(true) {
-				mensagemTerminal = leitorTerminal.readLine();
-				if(mensagemTerminal == null || mensagemTerminal.length() == 0) {
-					continue;
-				}
-				escritor.println(mensagemTerminal);
-				if(mensagemTerminal.equalsIgnoreCase("::SAIR")) {
-					System.exit(0);
-				}
-
-			}
 			
 		} catch (UnknownHostException e) {
 			System.out.println("O endereco de ip passado e invalido");
